@@ -150,7 +150,7 @@ def run_training(mlflow_tracking: bool = False) -> TrainedModel:
                     mlflow.log_metric(f"test_{k}", v)
                 mlflow.log_artifact(str(cm_path))
                 mlflow.log_artifact(str(roc_path))
-                mlflow.sklearn.log_model(best, name="model")
+                mlflow.sklearn.log_model(best, artifact_path="model")
 
         trained.append(TrainedModel(
             name=spec.name,
