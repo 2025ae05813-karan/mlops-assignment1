@@ -1,0 +1,45 @@
+# Full local monitoring stack (Assignment Task 8).
+# Runs the API together with Prometheus (metrics scraping) and Grafana
+# (dashboards). Bring it up with:  docker compose up --build
+#
+#   API        -> http://localhost:8000   (/docs, /predict, /metrics)
+#   Prometheus -> http://localhost:9090
+#   Grafana    -> http://localhost:3000   (login admin / admin)
+services:
+  api:
+    build: .
+    image: heart-disease-api:latest
+    container_name: heart-disease-api
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: prometheus
+    depends_on:
+      - api
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./deploy/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: grafana
+    depends_on:
+      - prometheus
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./deploy/monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
