@@ -1,0 +1,30 @@
+[project]
+name = "heart-disease-mlops"
+version = "1.0.0"
+description = "End-to-end MLOps pipeline for heart disease risk prediction"
+requires-python = ">=3.9"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore::UserWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+extend-exclude = ["notebooks", ".venv", "mlruns"]
+
+[tool.ruff.lint]
+# Enable: pyflakes (F), pycodestyle errors/warnings (E, W), isort (I),
+# bugbear (B), and comprehension (C4) rules.
+select = ["E", "W", "F", "I", "B", "C4"]
+ignore = [
+    "E501",  # line length handled by formatter; don't fail CI on long lines
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B008"]  # pytest fixtures/params use call-in-default patterns

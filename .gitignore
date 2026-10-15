@@ -14,6 +14,9 @@ env/
 # MLflow local tracking store
 mlruns/
 
+# CI-generated test report
+report/pytest-report.xml
+
 # Raw dataset archive (large; regenerated via scripts/download_data.py).
 # The cleaned data/processed/heart.csv IS committed for reproducibility.
 data/raw/heart+disease.zip
