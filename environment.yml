@@ -1,0 +1,35 @@
+# Conda environment alternative to requirements.txt.
+# Create with:  conda env create -f environment.yml
+# Activate with: conda activate heart-disease-mlops
+name: heart-disease-mlops
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      # Core data / ML stack
+      - pandas==2.2.2
+      - numpy==1.26.4
+      - scikit-learn==1.5.1
+      - scipy==1.13.1
+      - joblib==1.4.2
+      # EDA / visualization
+      - matplotlib==3.9.2
+      - seaborn==0.13.2
+      # Notebook support
+      - jupyter==1.1.1
+      - ipykernel==6.31.0
+      # Experiment tracking
+      - mlflow==2.14.3
+      # Model serving API
+      - fastapi==0.111.1
+      - uvicorn[standard]==0.30.3
+      - pydantic==2.8.2
+      # Monitoring
+      - prometheus-fastapi-instrumentator==7.0.0
+      # Testing + linting
+      - pytest==8.3.2
+      - httpx==0.28.1
+      - ruff==0.5.5
