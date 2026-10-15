@@ -1,0 +1,19 @@
+# Keep the build context small and the image clean.
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+mlruns/
+.git/
+.github/
+notebooks/
+report/
+deploy/
+tests/
+*.md
+data/raw/heart+disease.zip
+.DS_Store
