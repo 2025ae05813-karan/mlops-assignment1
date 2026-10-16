@@ -9,6 +9,8 @@ dependencies:
   - python=3.11
   - pip
   - pip:
+      # Python 3.12+ compatibility: MLflow 2.14.x still imports pkg_resources
+      - setuptools<81
       # Core data / ML stack
       - pandas==2.2.2
       - numpy==1.26.4
@@ -33,3 +35,5 @@ dependencies:
       - pytest==8.3.2
       - httpx==0.28.1
       - ruff==0.5.5
+      # Reporting
+      - markdown==3.6

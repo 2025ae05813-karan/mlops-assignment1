@@ -10,6 +10,10 @@ scikit-learn==1.5.1
 scipy==1.13.1
 joblib==1.4.2
 
+# Python 3.12+ no longer ships setuptools/pkg_resources in fresh venvs,
+# which MLflow 2.14.x still imports. Pin it explicitly for portability.
+setuptools<81
+
 # EDA / visualization
 matplotlib==3.9.2
 seaborn==0.13.2
@@ -33,3 +37,6 @@ prometheus-fastapi-instrumentator==7.0.0
 pytest==8.3.2
 httpx==0.28.1
 ruff==0.5.5
+
+# Reporting (Task 9)
+markdown==3.6
