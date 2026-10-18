@@ -2,7 +2,7 @@
 
 **Course:** Machine Learning Operations (AIMLCZG523) — Assignment 01
 **Project:** Scalable, reproducible ML solution for heart disease risk prediction
-**Repository:** `https://github.com/<your-user>/<your-repo>`
+**Repository:** `https://github.com/2025ae05813-karan/mlops-assignment1`
 
 ---
 
@@ -163,7 +163,11 @@ View the UI with:
 mlflow ui --backend-store-uri ./mlruns   # http://127.0.0.1:5000
 ```
 
-> _Insert MLflow UI screenshot here (runs comparison view)._
+![MLflow runs](screenshots/mlflow_runs.png)
+
+The `heart-disease-classification` experiment shows all tuned runs (Logistic
+Regression and Random Forest), each logged from `train.py` with its parameters,
+metrics, and the serialized sklearn model.
 
 ---
 
@@ -194,7 +198,11 @@ mlflow ui --backend-store-uri ./mlruns   # http://127.0.0.1:5000
 The pipeline **fails on any lint or test error** (verified non-zero exit codes)
 and uploads the test report, model, plots, and MLflow runs as artifacts.
 
-> _Insert GitHub Actions green-run screenshot here._
+![GitHub Actions pipeline](screenshots/github_actions_green.png)
+
+A successful run of the pipeline on `main`: all three jobs — Lint (ruff), Unit
+tests (pytest), and Train & publish model — pass, producing four uploaded
+artifacts.
 
 ---
 
@@ -211,7 +219,21 @@ docker build -t heart-disease-api:latest .
 bash scripts/docker_build_and_test.sh
 ```
 
-> _Insert Docker build + sample `/predict` screenshot here._
+**Image build (16/16 layers, self-contained):**
+
+![Docker build](screenshots/docker_build.png)
+
+**Container health and predictions** — the helper script hits `/health`, then
+posts a low-risk and a high-risk sample. The low-risk patient returns
+`no_disease` (confidence 0.83) and the high-risk patient returns `disease`
+(confidence 0.986):
+
+![Docker /health and /predict](screenshots/docker_predict.png)
+
+**Request logs from inside the container** (method, path, status, latency, plus
+prediction label and confidence):
+
+![Docker container logs](screenshots/docker_logs.png)
 
 ---
 
@@ -228,8 +250,24 @@ Deployed to **local Kubernetes** (Minikube or Docker Desktop) via manifests in
 bash scripts/k8s_deploy_and_verify.sh
 ```
 
-> _Insert `kubectl get deployment,pods,svc` + `curl /predict` screenshots here._
-> See `deploy/k8s/README.md` for the full flow.
+**Cluster state** — the Deployment reports 2/2 ready replicas, both pods are
+`Running`, and the `LoadBalancer` Service exposes the API (port 80 → NodePort
+32287):
+
+![kubectl get deployment,pods,svc](screenshots/k8s_get_resources.png)
+
+**Endpoint verification against the cluster** — `curl $URL/health` returns the
+loaded model, and `curl $URL/predict` returns a `disease` prediction with 0.986
+confidence:
+
+![kubectl curl /predict](screenshots/k8s_curl_predict.png)
+
+**Deployment detail** (`kubectl describe`) — RollingUpdate strategy, liveness &
+readiness probes on `/health`, and CPU/memory requests and limits:
+
+![kubectl describe deployment](screenshots/k8s_describe.png)
+
+See `deploy/k8s/README.md` for the full flow.
 
 ---
 
@@ -243,8 +281,23 @@ bash scripts/k8s_deploy_and_verify.sh
   request rate, status codes, latency p50/p95, predict count, and average
   duration.
 
-> _Insert Prometheus Targets (UP) and Grafana dashboard screenshots here._
-> See `deploy/monitoring/README.md`.
+**Prometheus targets** — both the API and Prometheus itself are scraped and
+`UP`:
+
+![Prometheus targets](screenshots/prometheus_targets.png)
+
+**Prometheus query** — `http_requests_total` broken down by handler after a
+load-generation loop (`/health`, `/metrics`, and 100 `/predict` calls):
+
+![Prometheus query](screenshots/prometheus_query.png)
+
+**Grafana dashboard** — request rate by handler, responses by status code,
+latency p50/p95, total `/predict` requests, and average request duration, all
+updating live:
+
+![Grafana dashboard](screenshots/grafana_dashboard.png)
+
+See `deploy/monitoring/README.md`.
 
 ---
 

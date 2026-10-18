@@ -4,7 +4,7 @@ A production-style machine learning solution that predicts the risk of heart
 disease from patient health data and serves it as a cloud-ready, monitored API.
 Built for the MLOps (AIMLCZG523) Assignment 01.
 
-[![CI/CD Pipeline](https://github.com/<your-user>/<your-repo>/actions/workflows/ci.yml/badge.svg)](../../actions)
+[![CI/CD Pipeline](https://github.com/2025ae05813-karan/mlops-assignment1/actions/workflows/ci.yml/badge.svg)](https://github.com/2025ae05813-karan/mlops-assignment1/actions)
 
 ---
 
