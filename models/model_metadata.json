@@ -63,7 +63,7 @@
       }
     },
     "random_forest": {
-      "cv_roc_auc": 0.8996227604923256,
+      "cv_roc_auc": 0.8992601601297252,
       "test_metrics": {
         "accuracy": 0.8524590163934426,
         "precision": 0.8064516129032258,
